@@ -4,18 +4,20 @@ import apicall
 
 
 def main(argv):
-  filename = "trial-wordslearnt.txt"
+
+  filename = "wordslearnt.txt"
   url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
   words = set()
   existingWords = set()
   checkWordsFlag = False
 
   try:
-    opts, args = getopt(argv,"hc",["help","check-words"])
+    opts, args = getopt(argv, "hc", ["help","check-words"])
   except GetoptError as e:
     print("Invalid command line arguments")
     print("trial.py [-c | --check-words]")
     sys.exit(2)
+
   for opt, arg in opts:
     if opt == '-h':
         print("trial.py [-c | --check-words]")
@@ -25,10 +27,11 @@ def main(argv):
   print ("Check words is set as ", checkWordsFlag)
 
   while(True):
-    word = input("Enter word: ").lower().strip()
-    if(word == "exit"):
+    word = input("Enter word: ")
+    if(word == "EXIT" or word == "STOP"):
       break
-    
+    word = word.lower().strip()
+
     if (checkWordsFlag == True):
       try: 
         dictionaryResult = apicall.makeGetRequest(url, word)
