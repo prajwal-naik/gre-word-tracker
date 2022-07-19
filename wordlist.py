@@ -4,7 +4,7 @@ import apicall
 
 
 def main(argv):
-  filename = "wordslearnt.txt"
+  filename = "trial-wordslearnt.txt"
   url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
   words = set()
   existingWords = set()
@@ -28,13 +28,17 @@ def main(argv):
     word = input("Enter word: ").lower().strip()
     if(word == "exit"):
       break
-    dictionaryResult = apicall.makeGetRequest(url, word)
+    
     if (checkWordsFlag == True):
-      if(apicall.checkResult(dictionaryResult)):
-        words.add(word)
-        print("Totals words learnt in this sprint: {}".format(len(words)))
-      else:
-        print("Possible typo or word doesn't exist\n")
+      try: 
+        dictionaryResult = apicall.makeGetRequest(url, word)
+        if(apicall.checkResult(dictionaryResult)):
+          words.add(word)
+          print("Totals words learnt in this sprint: {}".format(len(words)))
+        else:
+          print("Possible typo or word doesn't exist\n")
+      except: 
+        print("Unable to make GET request. Skipping word...")
     else: 
       words.add(word)
       print("Totals words learnt in this sprint: {}".format(len(words)))
@@ -47,7 +51,7 @@ def main(argv):
       existingWords.update(set(lines))
       f.close()
   except FileNotFoundError as e:
-    print("This is probably your first sprint: ", e.strerror)
+    print("This is probably your first sprint: {} - {}".format(e.strerror, filename))
 
   existingWords.update(words)
   with open(filename, "w") as f:
@@ -56,4 +60,4 @@ def main(argv):
     f.close()
 
 if __name__ == "__main__":
-  main(sys.argv[1:])
+  sys.exit(main(sys.argv[1:]))
