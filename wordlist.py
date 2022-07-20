@@ -2,7 +2,6 @@ from getopt import GetoptError, getopt
 import sys
 import apicall
 
-
 def main(argv):
 
   filename = "wordslearnt.txt"
@@ -28,7 +27,7 @@ def main(argv):
 
   while(True):
     word = input("Enter word: ")
-    if(word == "EXIT" or word == "STOP"):
+    if(word in ("exit", "EXIT", "stop", "STOP")):
       break
     word = word.lower().strip()
 
@@ -41,7 +40,7 @@ def main(argv):
         else:
           print("Possible typo or word doesn't exist\n")
       except: 
-        print("Unable to make GET request. Skipping word...")
+        print("Unable to check word. Skipping word...")
     else: 
       words.add(word)
       print("Totals words learnt in this sprint: {}".format(len(words)))
