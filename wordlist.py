@@ -1,6 +1,5 @@
 from getopt import GetoptError, getopt
 import sys
-import operator
 
 import apicall
 
