@@ -1,36 +1,13 @@
 from getopt import GetoptError, getopt
-from os import remove
 import sys
-
 import apicall
+
 
 filename = "trial-wordslearnt.txt"
 url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 words = set()
 existingWords = set()
 checkWordsFlag = False
-
-
-def parseArguments(argv):
-  try:
-    opts, args = getopt(argv, "hcf:", ["help","check-words", "file"])
-  except GetoptError as e:
-    print("Invalid command line arguments")
-    print("trial.py [-c | --check-words]")
-    sys.exit(2)
-
-  for opt, arg in opts:
-    if opt == '-h':
-        print("trial.py [-c | --check-words]")
-        sys.exit()
-    elif opt in ("-c", "--check-words"):
-        checkWordsFlag = True
-    elif opt in ("-f", "--file"):
-        filename = arg
-    else: 
-      print("Invalid argument -", opt)
-      print("trial.py [-c | --check-words]")
-      sys.exit()
 
 def removeWord(deleteWord):
   if(len(deleteWord)):
@@ -79,10 +56,32 @@ def updateFiles():
     print("Specified file not found. Printing words on console...")
     for i in existingWords:
       print(i + "\n")
+    print("Total words learnt this sprint: ", len(existingWords))
 
 def main(argv):
 
-  parseArguments(argv)
+  global filename
+  global checkWordsFlag
+
+  try:
+    opts, args = getopt(argv, "hcf:", ["help","check-words", "file"])
+  except GetoptError as e:
+    print("Invalid command line arguments")
+    print("trial.py [-c | --check-words]")
+    sys.exit(2)
+
+  for opt, arg in opts:
+    if opt == '-h':
+        print("trial.py [-c | --check-words]")
+        sys.exit()
+    elif opt in ("-c", "--check-words"):
+        checkWordsFlag = True
+    elif opt in ("-f", "--file"):
+        filename = arg
+    else: 
+      print("Invalid argument -", opt)
+      print("trial.py [-c | --check-words]")
+      sys.exit()
 
   print("Check words is set as - ", checkWordsFlag)
   print("Output file is set as - ", filename)
