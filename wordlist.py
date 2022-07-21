@@ -35,28 +35,6 @@ def addWord(newWord):
     words.add(newWord)
     print("Totals words learnt in this sprint: {}".format(len(words)))
 
-def updateFiles(): 
-  try:
-    with open(filename, "r") as f:
-      lines = f.readlines()
-      lines = [line.rstrip() for line in lines]
-      existingWords.update(set(lines))
-      f.close()
-  except FileNotFoundError as e:
-    print("This is probably your first sprint: {} - {}".format(e.strerror, filename))
-
-  existingWords.update(words)
-
-  try:
-    with open(filename, "w") as f:
-      for i in existingWords:
-        f.write(i+"\n")
-      f.close()
-  except:
-    print("Specified file not found. Printing words on console...")
-    for i in existingWords:
-      print(i + "\n")
-    print("Total words learnt this sprint: ", len(existingWords))
 
 def main(argv):
 
@@ -100,7 +78,27 @@ def main(argv):
 
   print(words)
 
-  updateFiles()
+  try:
+    with open(filename, "r") as f:
+      lines = f.readlines()
+      lines = [line.rstrip() for line in lines]
+      existingWords.update(set(lines))
+      f.close()
+  except FileNotFoundError as e:
+    print("This is probably your first sprint: {} - {}".format(e.strerror, filename))
+
+  existingWords.update(words)
+
+  try:
+    with open(filename, "w") as f:
+      for i in existingWords:
+        f.write(i+"\n")
+      f.close()
+  except:
+    print("Specified file not found. Printing words on console...")
+    for i in existingWords:
+      print(i + "\n")
+    print("Total words learnt this sprint: ", len(existingWords))
 
 if __name__ == "__main__":
   sys.exit(main(sys.argv[1:]))
