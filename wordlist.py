@@ -1,17 +1,19 @@
 from getopt import GetoptError, getopt
 import sys
+import operator
+
 import apicall
 
 def main(argv):
 
-  filename = "wordslearnt.txt"
+  filename = "trial-wordslearnt.txt"
   url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
   words = set()
   existingWords = set()
   checkWordsFlag = False
 
   try:
-    opts, args = getopt(argv, "hc", ["help","check-words"])
+    opts, args = getopt(argv, "hcf", ["help","check-words", "file"])
   except GetoptError as e:
     print("Invalid command line arguments")
     print("trial.py [-c | --check-words]")
@@ -23,27 +25,46 @@ def main(argv):
         sys.exit()
     elif opt in ("-c", "--check-words"):
         checkWordsFlag = True
-  print ("Check words is set as ", checkWordsFlag)
+    elif opt in ("-f", "--file"):
+        filename = arg
+    else: 
+      print("Invalid argument -", opt)
+      print("trial.py [-c | --check-words]")
+      sys.exit()
+  print("Check words is set as - ", checkWordsFlag)
+  print("Output file is set as - ", filename)
 
   while(True):
     word = input("Enter word: ")
+
     if(word in ("exit", "EXIT", "stop", "STOP")):
       break
-    word = word.lower().strip()
-
-    if (checkWordsFlag == True):
-      try: 
-        dictionaryResult = apicall.makeGetRequest(url, word)
-        if(apicall.checkResult(dictionaryResult)):
-          words.add(word)
-          print("Totals words learnt in this sprint: {}".format(len(words)))
-        else:
-          print("Possible typo or word doesn't exist\n")
-      except: 
-        print("Unable to check word. Skipping word...")
+    elif("remove" in word.lower()):
+      deleteWord = word.split(" ")[-1].lower().strip()
+      if(len(deleteWord)):
+        try:
+          words.remove(deleteWord)
+          print("Deleted word: ", deleteWord)
+        except KeyError as e:
+          print("Word not found in current sprint - ", deleteWord)
+      else: 
+        print("Specify word to remove")
     else: 
-      words.add(word)
-      print("Totals words learnt in this sprint: {}".format(len(words)))
+      word = word.lower().strip()
+      if (checkWordsFlag == True):
+        try: 
+          dictionaryResult = apicall.makeGetRequest(url, word)
+          if(apicall.checkResult(dictionaryResult)):
+            words.add(word)
+            print("Totals words learnt in this sprint: {}".format(len(words)))
+          else:
+            print("Possible typo or word doesn't exist\n")
+        except: 
+          print("Unable to check word. Skipping word...")
+      else: 
+        words.add(word)
+        print("Totals words learnt in this sprint: {}".format(len(words)))
+
   print(words)
 
   try:
