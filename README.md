@@ -2,13 +2,9 @@
 
 This can be used to track the number of words you have learnt everyday.
 
-How to run - <br/>
-  &emsp;`python3 wordlist.py -c -f filename`
+## How to run ##
+`python3 wordlist.py -c -f filename`
   
-  &emsp;-c - OPTIONAL - Used to check if every word entered is present in the english dictionary<br/>
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;False by default.<br/><br/>
-  &emsp;-f filename - REQUIRED - Used to enter the words into a file at the end of every sprint for future use.<br/>
-  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;If not provided, enters into file named trial-wordslearnt.txt
 
   First Header  | Second Header | Description                                                                   | Default
   | :---: | :---: | :---: | :---:
