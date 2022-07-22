@@ -1,4 +1,5 @@
 from getopt import GetoptError, getopt
+import signal
 import sys
 import apicall
 
@@ -8,6 +9,9 @@ url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 words = set()
 existingWords = set()
 checkWordsFlag = False
+
+def confirmWord(checkWord):
+  return (checkWord in words)
 
 def removeWord(deleteWord):
   if(len(deleteWord)):
@@ -72,6 +76,12 @@ def main(argv):
     elif("remove" in word.lower()):
       deleteWord = word.split(" ")[-1].lower().strip()
       removeWord(deleteWord)
+    elif("check" in word.lower()):
+      checkWord = word.split(" ")[-1].lower().strip()
+      if (confirmWord(checkWord)):
+        print("{} has already been entered".format(checkWord))
+      else:
+        print("{} not found".format(checkWord))
     else: 
       word = word.lower().strip()
       addWord(word)
@@ -100,5 +110,12 @@ def main(argv):
       print(i + "\n")
     print("Total words learnt this sprint: ", len(existingWords))
 
+def sigint_handler(signal, frame):
+    print("\nForcefully exiting. Printing current sprint words on console...")
+    for i in words:
+      print(i)
+    sys.exit(0)
+
 if __name__ == "__main__":
+  signal.signal(signal.SIGINT, sigint_handler)
   sys.exit(main(sys.argv[1:]))
