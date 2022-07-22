@@ -11,7 +11,9 @@ existingWords = set()
 checkWordsFlag = False
 
 def confirmWord(checkWord):
-  return (checkWord in words)
+  if(len(checkWord)):
+    return (checkWord in words)
+  print("Specify the word to be checked")
 
 def removeWord(deleteWord):
   if(len(deleteWord)):
