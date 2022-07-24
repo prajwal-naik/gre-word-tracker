@@ -1,6 +1,8 @@
 from getopt import GetoptError, getopt
+import os
 import signal
 import sys
+from tabnanny import check
 import apicall
 
 
@@ -41,6 +43,8 @@ def addWord(newWord):
     words.add(newWord)
     print("Totals words learnt in this sprint: {}".format(len(words)))
 
+def getWordList(listWord):
+  return filter(lambda x: x.startswith(listWord), words)
 
 def main(argv):
 
@@ -71,7 +75,7 @@ def main(argv):
   print("Output file is set as - ", filename)
 
   while(True):
-    word = input("Enter word: ")
+    word = input("Input #~  ")
 
     if(word in ("exit", "EXIT", "stop", "STOP")):
       break
@@ -80,10 +84,20 @@ def main(argv):
       removeWord(deleteWord)
     elif("check" in word.lower()):
       checkWord = word.split(" ")[-1].lower().strip()
-      if (confirmWord(checkWord)):
-        print("{} has already been entered".format(checkWord))
+      if(checkWord == "length"):
+        print("Totals words learnt in this sprint: {}".format(len(words)))
       else:
-        print("{} not found".format(checkWord))
+        if (confirmWord(checkWord)):
+          print("{} has already been entered".format(checkWord))
+        else:
+          print("{} not found".format(checkWord))
+    elif("list" in word.lower()):
+      listWord = word.split(" ")[-1].lower().strip()
+      wordList = getWordList(listWord)
+      print("Words starting with {}\n======================\n".format(listWord))
+      for i in wordList: 
+        print(i)
+      print()
     else: 
       word = word.lower().strip()
       addWord(word)
@@ -113,11 +127,12 @@ def main(argv):
     print("Total words learnt this sprint: ", len(existingWords))
 
 def sigint_handler(signal, frame):
-    print("\nForcefully exiting. Printing current sprint words on console...")
-    for i in words:
-      print(i)
-    sys.exit(0)
+  print("\nForcefully exiting. Printing current sprint words on console...")
+  for i in words:
+    print(i)
+  sys.exit(0)
 
 if __name__ == "__main__":
   signal.signal(signal.SIGINT, sigint_handler)
+  print("Python script running at \"{}\"".format(os.getcwd()))
   sys.exit(main(sys.argv[1:]))
