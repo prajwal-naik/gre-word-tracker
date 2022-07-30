@@ -2,7 +2,6 @@ from getopt import GetoptError, getopt
 import os
 import signal
 import sys
-from tabnanny import check
 import apicall
 
 
@@ -77,7 +76,7 @@ def main(argv):
   while(True):
     word = input("Input #~  ")
 
-    if(word in ("exit", "EXIT", "stop", "STOP")):
+    if(word in ("exit()", "EXIT()", "stop()", "STOP()")):
       break
     elif("remove" in word.lower()):
       deleteWord = word.split(" ")[-1].lower().strip()
@@ -94,7 +93,7 @@ def main(argv):
     elif("list" in word.lower()):
       listWord = word.split(" ")[-1].lower().strip()
       wordList = getWordList(listWord)
-      print("Words starting with {}\n======================\n".format(listWord))
+      print("\nWords starting with {}\n======================".format(listWord))
       for i in wordList: 
         print(i)
       print()
