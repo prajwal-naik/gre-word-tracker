@@ -54,12 +54,12 @@ def main(argv):
     opts, args = getopt(argv, "hcf:", ["help","check-words", "file"])
   except GetoptError as e:
     print("Invalid command line arguments")
-    print("trial.py [-c | --check-words]")
+    print("trial.py [-c | --check-words] [-f | --file <file-name>]")
     sys.exit(2)
 
   for opt, arg in opts:
     if opt == '-h':
-        print("trial.py [-c | --check-words]")
+        print("trial.py [-c | --check-words] [-f | --file <file-name>]")
         sys.exit()
     elif opt in ("-c", "--check-words"):
         checkWordsFlag = True
@@ -67,7 +67,7 @@ def main(argv):
         filename = arg
     else: 
       print("Invalid argument -", opt)
-      print("trial.py [-c | --check-words]")
+      print("trial.py [-c | --check-words] [-f | --file <file-name>]")
       sys.exit()
 
   print("Check words is set as - ", checkWordsFlag)
